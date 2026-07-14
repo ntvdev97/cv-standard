@@ -2,6 +2,7 @@
 import { mount } from "@vue/test-utils";
 import { describe, it, expect } from "vitest";
 import Sidebar from "./Sidebar.vue";
+import { profileDataEn } from "../data/profile";
 
 describe("Sidebar Component", () => {
   const defaultProps = {
@@ -18,6 +19,7 @@ describe("Sidebar Component", () => {
       { name: "About", href: "#about" },
       { name: "Experience", href: "#experience" },
     ],
+    translations: profileDataEn.translations,
   };
 
   it("renders profile data correctly", () => {

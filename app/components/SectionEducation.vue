@@ -1,15 +1,16 @@
 <!-- app/components/SectionEducation.vue -->
 <script setup lang="ts">
-import type { Education } from "../types/profile";
+import type { Education, UiTranslations } from "../types/profile";
 
 defineProps<{
   educationList: Education[];
+  translations: UiTranslations;
 }>();
 </script>
 
 <template>
   <section class="education-section">
-    <h2>Education</h2>
+    <h2>{{ translations.educationTitle }}</h2>
 
     <div class="education-list">
       <!-- Education Cards -->

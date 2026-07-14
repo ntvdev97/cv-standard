@@ -2,12 +2,14 @@
 import { mount } from "@vue/test-utils";
 import { describe, it, expect, vi } from "vitest";
 import SectionContact from "./SectionContact.vue";
+import { profileDataEn } from "../data/profile";
 
 describe("SectionContact Component", () => {
   const defaultProps = {
     email: "alex.mercer.dev@example.com",
     location: "San Francisco, CA",
     socialLinks: [],
+    translations: profileDataEn.translations,
   };
 
   it("renders contact details correctly", () => {

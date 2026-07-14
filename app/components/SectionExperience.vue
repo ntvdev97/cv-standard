@@ -1,15 +1,16 @@
 <!-- app/components/SectionExperience.vue -->
 <script setup lang="ts">
-import type { Experience } from "../types/profile";
+import type { Experience, UiTranslations } from "../types/profile";
 
 defineProps<{
   experiences: Experience[];
+  translations: UiTranslations;
 }>();
 </script>
 
 <template>
   <section class="experience-section">
-    <h2>Professional Experience</h2>
+    <h2>{{ translations.experienceTitle }}</h2>
 
     <div class="timeline-container">
       <!-- Vertical line styled via CSS -->

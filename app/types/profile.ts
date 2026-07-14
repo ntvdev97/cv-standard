@@ -71,3 +71,49 @@ export interface PersonalProfile {
   education: Education[];
   certifications: Certification[];
 }
+
+export interface UiTranslations {
+  downloadCv: string;
+  availableForWork: string;
+  viewExperience: string;
+  contactMe: string;
+  aboutMe: string;
+  coreFocus: string;
+  yearsOfExp: string;
+  projectsCompleted: string;
+  industryCerts: string;
+  skillsTitle: string;
+  experienceTitle: string;
+  projectsTitle: string;
+  responsibilities: string;
+  impactResults: string;
+  liveDemo: string;
+  sourceCode: string;
+  educationTitle: string;
+  certificationsTitle: string;
+  verifyCredential: string;
+  contactTitle: string;
+  getInTouch: string;
+  emailLabel: string;
+  locationLabel: string;
+  fullName: string;
+  emailAddress: string;
+  message: string;
+  sendMessage: string;
+  sending: string;
+  successMessage: string;
+  errorMessage: string;
+  nameRequired: string;
+  nameMinLength: string;
+  emailRequired: string;
+  emailInvalid: string;
+  messageRequired: string;
+  messageMinLength: string;
+  helloWorldPrefix: string;
+  helloWorldStatus: string;
+}
+
+export interface LocalizedProfile {
+  profile: PersonalProfile;
+  translations: UiTranslations;
+}

@@ -1,15 +1,16 @@
 <!-- app/components/SectionCertifications.vue -->
 <script setup lang="ts">
-import type { Certification } from "../types/profile";
+import type { Certification, UiTranslations } from "../types/profile";
 
 defineProps<{
   certifications: Certification[];
+  translations: UiTranslations;
 }>();
 </script>
 
 <template>
   <section class="certifications-section">
-    <h2>Certifications</h2>
+    <h2>{{ translations.certificationsTitle }}</h2>
 
     <div class="certifications-grid">
       <!-- Certification Cards -->
@@ -51,7 +52,7 @@ defineProps<{
             class="verify-link"
             :aria-label="`Verify ${cert.name} certification`"
           >
-            Verify Credential
+            {{ translations.verifyCredential }}
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"

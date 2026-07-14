@@ -1,15 +1,16 @@
 <!-- app/components/SectionSkills.vue -->
 <script setup lang="ts">
-import type { SkillGroup } from "../types/profile";
+import type { SkillGroup, UiTranslations } from "../types/profile";
 
 defineProps<{
   skillGroups: SkillGroup[];
+  translations: UiTranslations;
 }>();
 </script>
 
 <template>
   <section class="skills-section">
-    <h2>Skills & Technologies</h2>
+    <h2>{{ translations.skillsTitle }}</h2>
 
     <div class="skills-grid">
       <!-- Skill Cards -->

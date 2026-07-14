@@ -1,10 +1,13 @@
 <!-- app/components/SectionHero.vue -->
 <script setup lang="ts">
+import type { UiTranslations } from "../types/profile";
+
 defineProps<{
   name: string;
   title: string;
   bio: string;
   availableForWork: boolean;
+  translations: UiTranslations;
 }>();
 </script>
 
@@ -12,7 +15,14 @@ defineProps<{
   <section class="hero-section">
     <!-- Tiny Developer Welcome -->
     <div class="hello-world-tag">
-      <code>const developer = { status: 'coding' };</code>
+      <code
+        >const {{ translations.helloWorldPrefix }} = {
+        {{
+          translations.helloWorldPrefix === "developer"
+            ? "status"
+            : "trangThai"
+        }}: '{{ translations.helloWorldStatus }}' };</code
+      >
     </div>
 
     <!-- Title & Identity Info -->
@@ -32,7 +42,7 @@ defineProps<{
         class="btn btn-primary"
         aria-label="View professional experience timeline"
       >
-        View Experience
+        {{ translations.viewExperience }}
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
@@ -53,7 +63,7 @@ defineProps<{
         class="btn btn-secondary"
         aria-label="Go to contact form section"
       >
-        Contact Me
+        {{ translations.contactMe }}
       </a>
     </div>
   </section>

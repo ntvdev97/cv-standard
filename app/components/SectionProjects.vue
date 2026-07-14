@@ -1,15 +1,16 @@
 <!-- app/components/SectionProjects.vue -->
 <script setup lang="ts">
-import type { Project } from "../types/profile";
+import type { Project, UiTranslations } from "../types/profile";
 
 defineProps<{
   projects: Project[];
+  translations: UiTranslations;
 }>();
 </script>
 
 <template>
   <section class="projects-section">
-    <h2>Featured Projects</h2>
+    <h2>{{ translations.projectsTitle }}</h2>
 
     <div class="projects-grid">
       <!-- Project Cards -->
@@ -34,7 +35,7 @@ defineProps<{
         <!-- Responsibilities & Results -->
         <div class="project-details">
           <div class="details-block">
-            <h4>Key Responsibilities:</h4>
+            <h4>{{ translations.responsibilities }}</h4>
             <ul>
               <li v-for="resp in project.responsibilities" :key="resp">
                 {{ resp }}
@@ -43,7 +44,7 @@ defineProps<{
           </div>
 
           <div class="details-block">
-            <h4>Impact & Results:</h4>
+            <h4>{{ translations.impactResults }}</h4>
             <ul>
               <li
                 v-for="result in project.results"
@@ -77,7 +78,7 @@ defineProps<{
             class="btn btn-primary btn-sm"
             aria-label="View live demo for project"
           >
-            Live Demo
+            {{ translations.liveDemo }}
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -101,7 +102,7 @@ defineProps<{
             class="btn btn-secondary btn-sm"
             aria-label="View repository source code for project"
           >
-            Source Code
+            {{ translations.sourceCode }}
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"

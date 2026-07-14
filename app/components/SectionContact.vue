@@ -1,12 +1,13 @@
 <!-- app/components/SectionContact.vue -->
 <script setup lang="ts">
 import { reactive, ref } from "vue";
-import type { SocialLink } from "../types/profile";
+import type { SocialLink, UiTranslations } from "../types/profile";
 
-defineProps<{
+const props = defineProps<{
   email: string;
   location: string;
   socialLinks: SocialLink[];
+  translations: UiTranslations;
 }>();
 
 const formData = reactive({
@@ -36,28 +37,28 @@ const validateForm = (): boolean => {
 
   // Validate Name
   if (!formData.name.trim()) {
-    errors.name = "Name is required";
+    errors.name = props.translations.nameRequired;
     isValid = false;
   } else if (formData.name.trim().length < 2) {
-    errors.name = "Name must be at least 2 characters";
+    errors.name = props.translations.nameMinLength;
     isValid = false;
   }
 
   // Validate Email
   if (!formData.email.trim()) {
-    errors.email = "Email is required";
+    errors.email = props.translations.emailRequired;
     isValid = false;
   } else if (!emailRegex.test(formData.email.trim())) {
-    errors.email = "Please enter a valid email address";
+    errors.email = props.translations.emailInvalid;
     isValid = false;
   }
 
   // Validate Message
   if (!formData.message.trim()) {
-    errors.message = "Message is required";
+    errors.message = props.translations.messageRequired;
     isValid = false;
   } else if (formData.message.trim().length < 10) {
-    errors.message = "Message must be at least 10 characters";
+    errors.message = props.translations.messageMinLength;
     isValid = false;
   }
 
@@ -93,15 +94,18 @@ const handleSubmit = async () => {
 
 <template>
   <section class="contact-section">
-    <h2>Contact Me</h2>
+    <h2>{{ translations.contactTitle }}</h2>
 
     <div class="contact-grid">
       <!-- Direct Contact Details -->
       <div class="contact-info">
-        <h3>Get In Touch</h3>
+        <h3>{{ translations.getInTouch }}</h3>
         <p class="contact-sub">
-          Have an exciting project, a role opening, or just want to chat? Send a
-          message and let's discuss how we can work together.
+          {{
+            translations.helloWorldPrefix === "developer"
+              ? "Have an exciting project, a role opening, or just want to chat? Send a message and let's discuss how we can work together."
+              : "Bạn có dự án thú vị, cơ hội hợp tác hay chỉ muốn trò chuyện? Hãy gửi tin nhắn và thảo luận xem chúng ta có thể làm việc cùng nhau như thế nào."
+          }}
         </p>
 
         <div class="info-list">
@@ -123,7 +127,7 @@ const handleSubmit = async () => {
               </svg>
             </div>
             <div>
-              <span class="info-label">Email</span>
+              <span class="info-label">{{ translations.emailLabel }}</span>
               <a :href="`mailto:${email}`" class="info-value">{{ email }}</a>
             </div>
           </div>
@@ -152,7 +156,7 @@ const handleSubmit = async () => {
               </svg>
             </div>
             <div>
-              <span class="info-label">Location</span>
+              <span class="info-label">{{ translations.locationLabel }}</span>
               <span class="info-value">{{ location }}</span>
             </div>
           </div>
@@ -182,7 +186,7 @@ const handleSubmit = async () => {
                 d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
               />
             </svg>
-            <span>Message sent successfully! I'll get back to you soon.</span>
+            <span>{{ translations.successMessage }}</span>
           </div>
 
           <!-- Error Status Alert Banner -->
@@ -205,19 +209,23 @@ const handleSubmit = async () => {
                 d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
               />
             </svg>
-            <span>Please fix the form errors before submitting.</span>
+            <span>{{ translations.errorMessage }}</span>
           </div>
 
           <!-- Name Input -->
           <div class="form-group">
-            <label for="contact-name">Full Name</label>
+            <label for="contact-name">{{ translations.fullName }}</label>
             <input
               type="text"
               id="contact-name"
               v-model="formData.name"
               class="form-control"
               :class="{ 'has-error': errors.name }"
-              placeholder="e.g. John Doe"
+              :placeholder="
+                translations.helloWorldPrefix === 'developer'
+                  ? 'e.g. John Doe'
+                  : 'Ví dụ: Nguyễn Văn A'
+              "
               :disabled="isSubmitting"
               required
             />
@@ -228,14 +236,18 @@ const handleSubmit = async () => {
 
           <!-- Email Input -->
           <div class="form-group">
-            <label for="contact-email">Email Address</label>
+            <label for="contact-email">{{ translations.emailAddress }}</label>
             <input
               type="email"
               id="contact-email"
               v-model="formData.email"
               class="form-control"
               :class="{ 'has-error': errors.email }"
-              placeholder="e.g. john@example.com"
+              :placeholder="
+                translations.helloWorldPrefix === 'developer'
+                  ? 'e.g. john@example.com'
+                  : 'Ví dụ: nguyen@example.com'
+              "
               :disabled="isSubmitting"
               required
             />
@@ -246,14 +258,18 @@ const handleSubmit = async () => {
 
           <!-- Message Input -->
           <div class="form-group">
-            <label for="contact-message">Message</label>
+            <label for="contact-message">{{ translations.message }}</label>
             <textarea
               id="contact-message"
               v-model="formData.message"
               rows="5"
               class="form-control"
               :class="{ 'has-error': errors.message }"
-              placeholder="Write your message here..."
+              :placeholder="
+                translations.helloWorldPrefix === 'developer'
+                  ? 'Write your message here...'
+                  : 'Viết tin nhắn của bạn ở đây...'
+              "
               :disabled="isSubmitting"
               required
             ></textarea>
@@ -273,7 +289,7 @@ const handleSubmit = async () => {
               class="submit-spinner"
               aria-hidden="true"
             ></span>
-            {{ isSubmitting ? "Sending..." : "Send Message" }}
+            {{ isSubmitting ? translations.sending : translations.sendMessage }}
           </button>
         </form>
       </div>

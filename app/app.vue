@@ -1,9 +1,10 @@
 <!-- app/app.vue -->
 <script setup lang="ts">
-import { ref, onMounted, onBeforeUnmount } from "vue";
-import { profileData } from "./data/profile";
+import { ref, computed, onMounted, onBeforeUnmount } from "vue";
+import { profileDataEn, profileDataVi } from "./data/profile";
 import Sidebar from "./components/Sidebar.vue";
 import ThemeToggle from "./components/ThemeToggle.vue";
+import LanguageToggle from "./components/LanguageToggle.vue";
 import SectionHero from "./components/SectionHero.vue";
 import SectionAbout from "./components/SectionAbout.vue";
 import SectionSkills from "./components/SectionSkills.vue";
@@ -15,7 +16,18 @@ import SectionContact from "./components/SectionContact.vue";
 
 const activeSection = ref("hero");
 const isMobileMenuOpen = ref(false);
+const locale = ref("en");
 let observer: IntersectionObserver | null = null;
+
+// Determine active dataset based on selected language
+const activeProfile = computed(() =>
+  locale.value === "vi" ? profileDataVi : profileDataEn,
+);
+
+const setLocale = (lang: "en" | "vi") => {
+  locale.value = lang;
+  localStorage.setItem("lang", lang);
+};
 
 // Track active section as user scrolls
 onMounted(() => {
@@ -55,6 +67,15 @@ onMounted(() => {
         activeSection.value = targetId;
       }, 300);
     }
+  }
+
+  // Load language settings from localStorage or fallback to browser preferences
+  const savedLang = localStorage.getItem("lang");
+  if (savedLang === "en" || savedLang === "vi") {
+    locale.value = savedLang;
+  } else {
+    const browserLang = navigator.language || "";
+    locale.value = browserLang.startsWith("vi") ? "vi" : "en";
   }
 });
 
@@ -96,11 +117,15 @@ onBeforeUnmount(() => {
 
       <div class="mobile-logo">&lt;AM/&gt;</div>
 
-      <ThemeToggle />
+      <div class="header-controls">
+        <LanguageToggle :locale="locale" @change="setLocale" />
+        <ThemeToggle />
+      </div>
     </header>
 
-    <!-- Desktop Floating Theme Toggle -->
-    <div class="desktop-theme-toggle-container">
+    <!-- Desktop Floating Controls -->
+    <div class="desktop-controls-container">
+      <LanguageToggle :locale="locale" @change="setLocale" />
       <ThemeToggle />
     </div>
 
@@ -108,11 +133,12 @@ onBeforeUnmount(() => {
     <Sidebar
       :is-open="isMobileMenuOpen"
       :active-section="activeSection"
-      :social-links="profileData.socialLinks"
-      :nav-items="profileData.navItems"
-      :name="profileData.name"
-      :title="profileData.title"
-      :available-for-work="profileData.availableForWork"
+      :social-links="activeProfile.profile.socialLinks"
+      :nav-items="activeProfile.profile.navItems"
+      :name="activeProfile.profile.name"
+      :title="activeProfile.profile.title"
+      :available-for-work="activeProfile.profile.availableForWork"
+      :translations="activeProfile.translations"
       @close="isMobileMenuOpen = false"
     />
 
@@ -120,43 +146,57 @@ onBeforeUnmount(() => {
     <main id="main-content-area" class="main-content" tabindex="-1">
       <SectionHero
         id="hero"
-        :name="profileData.name"
-        :title="profileData.title"
-        :bio="profileData.bio"
-        :available-for-work="profileData.availableForWork"
+        :name="activeProfile.profile.name"
+        :title="activeProfile.profile.title"
+        :bio="activeProfile.profile.bio"
+        :available-for-work="activeProfile.profile.availableForWork"
+        :translations="activeProfile.translations"
       />
 
       <SectionAbout
         id="about"
-        :about-text="profileData.aboutText"
-        :years-of-experience="profileData.yearsOfExperience"
-        :career-focus="profileData.careerFocus"
+        :about-text="activeProfile.profile.aboutText"
+        :years-of-experience="activeProfile.profile.yearsOfExperience"
+        :career-focus="activeProfile.profile.careerFocus"
+        :translations="activeProfile.translations"
       />
 
-      <SectionSkills id="skills" :skill-groups="profileData.skillGroups" />
+      <SectionSkills
+        id="skills"
+        :skill-groups="activeProfile.profile.skillGroups"
+        :translations="activeProfile.translations"
+      />
 
       <SectionExperience
         id="experience"
-        :experiences="profileData.experiences"
+        :experiences="activeProfile.profile.experiences"
+        :translations="activeProfile.translations"
       />
 
-      <SectionProjects id="projects" :projects="profileData.projects" />
+      <SectionProjects
+        id="projects"
+        :projects="activeProfile.profile.projects"
+        :translations="activeProfile.translations"
+      />
 
       <SectionEducation
         id="education"
-        :education-list="profileData.education"
+        :education-list="activeProfile.profile.education"
+        :translations="activeProfile.translations"
       />
 
       <SectionCertifications
         id="certifications"
-        :certifications="profileData.certifications"
+        :certifications="activeProfile.profile.certifications"
+        :translations="activeProfile.translations"
       />
 
       <SectionContact
         id="contact"
-        :email="profileData.email"
-        :location="profileData.location"
-        :social-links="profileData.socialLinks"
+        :email="activeProfile.profile.email"
+        :location="activeProfile.profile.location"
+        :social-links="activeProfile.profile.socialLinks"
+        :translations="activeProfile.translations"
       />
     </main>
   </div>
@@ -164,11 +204,14 @@ onBeforeUnmount(() => {
 
 <style>
 /* Global rules for layout shell */
-.desktop-theme-toggle-container {
+.desktop-controls-container {
   position: fixed;
   top: 1.5rem;
   right: 1.5rem;
   z-index: 100;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 .mobile-header {
@@ -184,6 +227,12 @@ onBeforeUnmount(() => {
   right: 0;
   height: 60px;
   z-index: 45;
+}
+
+.header-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 .mobile-logo {
@@ -211,7 +260,7 @@ onBeforeUnmount(() => {
     display: flex;
   }
 
-  .desktop-theme-toggle-container {
+  .desktop-controls-container {
     display: none;
   }
 

@@ -1,15 +1,18 @@
 <!-- app/components/SectionAbout.vue -->
 <script setup lang="ts">
+import type { UiTranslations } from "../types/profile";
+
 defineProps<{
   aboutText: string;
   yearsOfExperience: number;
   careerFocus: string[];
+  translations: UiTranslations;
 }>();
 </script>
 
 <template>
   <section class="about-section">
-    <h2>About Me</h2>
+    <h2>{{ translations.aboutMe }}</h2>
 
     <div class="about-grid">
       <!-- Biography Text & Focus List -->
@@ -17,7 +20,7 @@ defineProps<{
         <p class="about-description">{{ aboutText }}</p>
 
         <div class="focus-area">
-          <h3>Core Areas of Focus</h3>
+          <h3>{{ translations.coreFocus }}</h3>
           <ul class="focus-list">
             <li v-for="focus in careerFocus" :key="focus">
               <svg
@@ -44,17 +47,17 @@ defineProps<{
       <div class="about-stats">
         <div class="stat-card">
           <span class="stat-number">{{ yearsOfExperience }}+</span>
-          <span class="stat-label">Years of Experience</span>
+          <span class="stat-label">{{ translations.yearsOfExp }}</span>
         </div>
 
         <div class="stat-card">
           <span class="stat-number">15+</span>
-          <span class="stat-label">Completed Projects</span>
+          <span class="stat-label">{{ translations.projectsCompleted }}</span>
         </div>
 
         <div class="stat-card">
           <span class="stat-number">3+</span>
-          <span class="stat-label">Industry Certs</span>
+          <span class="stat-label">{{ translations.industryCerts }}</span>
         </div>
       </div>
     </div>
