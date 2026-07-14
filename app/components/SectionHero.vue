@@ -102,7 +102,7 @@ defineProps<{
 }
 
 .gradient-text {
-  background: linear-gradient(135deg, var(--accent), #f43f5e);
+  background: linear-gradient(135deg, var(--accent), #35495e);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;

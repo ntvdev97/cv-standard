@@ -282,7 +282,7 @@ onBeforeUnmount(() => {
   width: 90px;
   height: 90px;
   border-radius: 50%;
-  background: linear-gradient(135deg, var(--accent), #f43f5e);
+  background: linear-gradient(135deg, var(--accent), #35495e);
   display: flex;
   align-items: center;
   justify-content: center;
