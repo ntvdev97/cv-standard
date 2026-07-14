@@ -97,7 +97,7 @@ onBeforeUnmount(() => {
       <!-- Avatar & Identity Section -->
       <div class="sidebar-header">
         <div class="avatar-container">
-          <span class="avatar-text">AM</span>
+          <span class="avatar-text">TV</span>
           <div class="avatar-ring"></div>
         </div>
         <h2 class="developer-name">{{ name }}</h2>

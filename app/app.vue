@@ -115,7 +115,7 @@ onBeforeUnmount(() => {
         </svg>
       </button>
 
-      <div class="mobile-logo">&lt;AM/&gt;</div>
+      <div class="mobile-logo">&lt;TV/&gt;</div>
 
       <div class="header-controls">
         <LanguageToggle :locale="locale" @change="setLocale" />
