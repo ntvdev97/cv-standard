@@ -13,6 +13,7 @@ import SectionProjects from "./components/SectionProjects.vue";
 import SectionEducation from "./components/SectionEducation.vue";
 import SectionCertifications from "./components/SectionCertifications.vue";
 import SectionContact from "./components/SectionContact.vue";
+import logoUrl from "~/assets/images/logo.png";
 
 const activeSection = ref("hero");
 const isMobileMenuOpen = ref(false);
@@ -23,6 +24,17 @@ let observer: IntersectionObserver | null = null;
 const activeProfile = computed(() =>
   locale.value === "vi" ? profileDataVi : profileDataEn,
 );
+
+// Inject logo image in head metadata
+useHead({
+  link: [
+    { rel: "icon", type: "image/png", href: logoUrl },
+  ],
+  meta: [
+    { property: "og:image", content: logoUrl },
+    { name: "twitter:image", content: logoUrl },
+  ],
+});
 
 const setLocale = (lang: "en" | "vi") => {
   locale.value = lang;

@@ -16,7 +16,7 @@ export const profileDataEn: LocalizedProfile = {
       "Database Optimization & Performance Tuning",
     ],
     availableForWork: true,
-    email: "vinhlb1702@gmail.com",
+    email: "vinhnt.dev39@gmail.com",
     location: "Bac Ninh, Vietnam (Remote / Hanoi)",
 
     socialLinks: [
@@ -44,6 +44,7 @@ export const profileDataEn: LocalizedProfile = {
       { name: "Experience", href: "#experience" },
       { name: "Projects", href: "#projects" },
       { name: "Education", href: "#education" },
+      { name: "Certifications", href: "#certifications" },
       { name: "Contact", href: "#contact" },
     ],
 
@@ -315,7 +316,7 @@ export const profileDataVi: LocalizedProfile = {
       "Tối ưu hóa cơ sở dữ liệu & Truy vấn dữ liệu",
     ],
     availableForWork: true,
-    email: "vinhlb1702@gmail.com",
+    email: "vinhnt.dev39@gmail.com",
     location: "Bắc Ninh / Hà Nội (Hỗ trợ Remote)",
 
     socialLinks: [
@@ -343,6 +344,7 @@ export const profileDataVi: LocalizedProfile = {
       { name: "Kinh nghiệm", href: "#experience" },
       { name: "Dự án", href: "#projects" },
       { name: "Học vấn", href: "#education" },
+      { name: "Chứng chỉ", href: "#certifications" },
       { name: "Liên hệ", href: "#contact" },
     ],
 

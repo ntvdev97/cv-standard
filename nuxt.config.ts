@@ -12,7 +12,7 @@ export default defineNuxtConfig({
 
   app: {
     head: {
-      title: "John Doe | Senior Full-Stack Developer & Architect",
+      title: "VinhNT | Full-Stack Developer & Architect",
       htmlAttrs: {
         lang: "en",
       },
@@ -22,13 +22,13 @@ export default defineNuxtConfig({
         {
           name: "description",
           content:
-            "Professional CV and Portfolio website of a Senior Full-Stack Developer specializing in Vue.js, Nuxt, TypeScript, Java Spring Boot, AWS, and Docker.",
+            "Professional CV and Portfolio website of a Full-Stack Developer specializing in Vue.js, Nuxt, TypeScript, Java Spring Boot, AWS, and Docker.",
         },
 
         // OpenGraph
         {
           property: "og:title",
-          content: "John Doe | Senior Full-Stack Developer",
+          content: "VinhNT | Full-Stack Developer",
         },
         {
           property: "og:description",
@@ -41,7 +41,7 @@ export default defineNuxtConfig({
         { name: "twitter:card", content: "summary_large_image" },
         {
           name: "twitter:title",
-          content: "John Doe | Senior Full-Stack Developer",
+          content: "VinhNT | Full-Stack Developer",
         },
         {
           name: "twitter:description",

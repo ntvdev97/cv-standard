@@ -19,6 +19,7 @@ const emit = defineEmits<{
 }>();
 
 const isDesktop = ref(true);
+const showFullAvatar = ref(false);
 let mediaQueryList: MediaQueryList | null = null;
 let mediaListener: ((e: MediaQueryListEvent) => void) | null = null;
 
@@ -26,10 +27,14 @@ const handleLinkClick = () => {
   emit("close");
 };
 
-// Handle Escape key to close mobile sidebar drawer
+// Handle Escape key to close mobile sidebar drawer or avatar modal
 const handleKeyDown = (event: KeyboardEvent) => {
-  if (event.key === "Escape" && props.isOpen) {
-    emit("close");
+  if (event.key === "Escape") {
+    if (showFullAvatar.value) {
+      showFullAvatar.value = false;
+    } else if (props.isOpen) {
+      emit("close");
+    }
   }
 };
 
@@ -96,8 +101,16 @@ onBeforeUnmount(() => {
 
       <!-- Avatar & Identity Section -->
       <div class="sidebar-header">
-        <div class="avatar-container">
-          <span class="avatar-text">TV</span>
+        <div
+          class="avatar-container"
+          @click="showFullAvatar = true"
+          @keydown.enter="showFullAvatar = true"
+          @keydown.space.prevent="showFullAvatar = true"
+          role="button"
+          tabindex="0"
+          aria-label="View full-size avatar"
+        >
+          <img src="~/assets/images/im.jpg" alt="Avatar" class="avatar-image" />
           <div class="avatar-ring"></div>
         </div>
         <h2 class="developer-name">{{ name }}</h2>
@@ -219,6 +232,46 @@ onBeforeUnmount(() => {
         </a>
       </div>
     </aside>
+
+    <!-- Full-size Avatar Modal -->
+    <Transition name="fade">
+      <div
+        v-if="showFullAvatar"
+        class="avatar-modal"
+        @click="showFullAvatar = false"
+        aria-modal="true"
+        role="dialog"
+      >
+        <div class="modal-backdrop"></div>
+        <div class="modal-content" @click.stop>
+          <button
+            class="modal-close-btn"
+            @click="showFullAvatar = false"
+            aria-label="Close image dialog"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              class="icon-close"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M6 18L18 6M6 6l12 12"
+              />
+            </svg>
+          </button>
+          <img
+            src="~/assets/images/im.jpg"
+            alt="Full Avatar"
+            class="modal-avatar-image"
+          />
+        </div>
+      </div>
+    </Transition>
   </div>
 </template>
 
@@ -289,6 +342,24 @@ onBeforeUnmount(() => {
   position: relative;
   margin-bottom: 1.25rem;
   box-shadow: var(--shadow-md);
+  overflow: hidden; /* Ensure avatar image doesn't overflow container corners */
+  cursor: pointer;
+  transition: transform var(--transition-speed) ease, outline-color var(--transition-speed) ease;
+}
+
+.avatar-container:hover,
+.avatar-container:focus-visible {
+  transform: scale(1.05);
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+}
+
+.avatar-image {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  z-index: 2;
 }
 
 .avatar-text {
@@ -487,5 +558,94 @@ onBeforeUnmount(() => {
   .close-btn {
     display: block;
   }
+}
+
+/* Avatar Modal Styles */
+.avatar-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 1.5rem;
+}
+
+.modal-backdrop {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(8px);
+}
+
+.modal-content {
+  position: relative;
+  max-width: 90vw;
+  max-height: 90vh;
+  z-index: 1001;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+}
+
+.modal-avatar-image {
+  max-width: 100%;
+  max-height: 80vh;
+  object-fit: contain;
+  display: block;
+}
+
+.modal-close-btn {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: rgba(0, 0, 0, 0.5);
+  border: none;
+  color: #ffffff;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  z-index: 1002;
+}
+
+.modal-close-btn:hover {
+  background: rgba(0, 0, 0, 0.8);
+  transform: scale(1.1);
+}
+
+/* Vue Transitions */
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.3s ease;
+}
+
+.fade-enter-active .modal-content,
+.fade-leave-active .modal-content {
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+
+.fade-enter-from .modal-content,
+.fade-leave-to .modal-content {
+  transform: scale(0.9);
 }
 </style>
