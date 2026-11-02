@@ -1,3 +1,4 @@
+
 name: Deploy Nuxt to GitHub Pages
 
 on:
@@ -6,7 +7,6 @@ on:
       - main
   workflow_dispatch:
 
-# Prevent concurrent deployments
 concurrency:
   group: github-pages
   cancel-in-progress: true
@@ -22,20 +22,31 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v6
 
+      # Setup pnpm
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+          run_install: false
+
+      # Setup Node.js and pnpm cache
       - name: Setup Node.js
         uses: actions/setup-node@v6
         with:
           node-version: 22
-          cache: npm
+          cache: pnpm
 
+      # Install dependencies
       - name: Install dependencies
-        run: npm ci
+        run: pnpm install --frozen-lockfile
 
+      # Generate static site
       - name: Generate static site
-        run: npm run generate
+        run: pnpm generate
         env:
           NUXT_APP_BASE_URL: /${{ github.event.repository.name }}/
 
+      # Upload artifact
       - name: Upload GitHub Pages artifact
         uses: actions/upload-pages-artifact@v4
         with:
